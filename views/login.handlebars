@@ -1,0 +1,8 @@
+<div class="container align-items-center justify-content-center h-100">
+    <form method="POST" action="/login">
+    <span class="mr-5">Username:</span> <div><input type="text" name="username"></div><br>
+    <span class="mr-5">Password:</span> <div><input type="password" name="password"></div>
+    <input type="submit" value="Login">
+    </form>
+    <div class="text-warning">{{#if error}}Error: Invalid credentials {{/if}}</div>
+</div>

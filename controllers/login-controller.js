@@ -1,6 +1,11 @@
-class LoginControlling {
+const loginAuthenticate = require('./login-authenticate.js');
+const authenticate = new loginAuthenticate();
+// console.log(authenticate.cookieAuthentication);
+
+class LoginController {
     constructor() {
-        this.adminUser = { username: "admin", password: "admin" }
+        this.adminUser = { username: "admin", password: "admin" };
+        this.authenticate = authenticate;
     }
 
     indexPage(req, res) {
@@ -10,7 +15,7 @@ class LoginControlling {
         });
     }
 
-    login(req, res) {
+    loginPage(req, res) {
         const {error} = req.query;
         res.render('login', {
             mainTitle: "of Motors",
@@ -18,10 +23,14 @@ class LoginControlling {
         });
     }
 
-    admin(req, res) {
+    adminPage(req, res) {
         res.render('admin', {
             mainTitle: "of Motors"
         });
+    }
+
+    cookieAuthentication(req,res,next) {
+        return this.authenticate.cookieAuthentication(req,res,next);
     }
 
     userLogin(req, res) {
@@ -29,19 +38,23 @@ class LoginControlling {
         const pw = this.adminUser.password;
         const { username, password } = req.body;
         if (username === admin && password === pw) {
-            console.log('succesfull login');
-            res.redirect('/admin');
+            const session = this.authenticate.registrateSession(username);
+            // console.log(session,authenticate.AUTH_COOKIE);
+
+            res.cookie(this.authenticate.AUTH_COOKIE,session.id).redirect('/admin');
             return;
         }
         res.redirect('/login?error=credentials');
     }
 
     logout(req,res) {
-        res.redirect('/login');
+        delete this.authenticate.session['id'];
+        console.log(this.authenticate.session);
+        res.clearCookie(this.authenticate.AUTH_COOKIE).redirect('/login');
     }
 }
 
-module.exports = LoginControlling;
+module.exports = LoginController;
 
 const posts = [
     {author: "Author",

@@ -3,9 +3,37 @@
         <input type="text" name="title" id="title" required><br>
         <label for="validationDefault02">Content</label><br>
         <textarea name="content" form="newpostform" id="newpostcontent" required>Enter text here...</textarea><br>
-        <a href="/admin">Discard</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                Discard
+        </button>
+        {{!-- <a href="/admin">Discard</a> --}}
         <input type="submit" value="Publish">
 </form>
 {{#if error}}
 <h3>Some input is missing</h3>
 {{/if}}
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                        <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Discard</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                </button>
+                        </div>
+                        <div class="modal-body">
+                                Are you sure want to discard ?
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="/admin">Discard</a>
+                        </div>
+                </div>
+        </div>
+</div>

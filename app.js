@@ -19,6 +19,9 @@ app.use(cookieParser());
 const loginModule = require('./controllers/login-controller.js');
 const loginController = new loginModule();
 
+const {Post} = require('./controllers/post-controller.js');
+
+
 app.get('/', loginController.indexPage);
 
 app.get('/login', loginController.loginPage);
@@ -28,5 +31,9 @@ app.post('/login', loginController.userLogin.bind(loginController));
 app.get('/admin', loginController.cookieAuthentication.bind(loginController), loginController.adminPage);
 
 app.get('/logout', loginController.logout.bind(loginController));
+
+app.get('/newpost', Post.newPostPage);
+
+app.post('/newpost', Post.newPostPublish);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

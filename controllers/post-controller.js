@@ -6,7 +6,7 @@ class Post {
 
     static newPostPage(req, res) {
         const { error } = req.query;
-        
+
         res.render('newpost', {
             mainTitle: "of Motors",
             error: error
@@ -15,6 +15,7 @@ class Post {
 
     static newPostPublish(req, res) {
         const { title, content } = req.body
+        console.log(req.body);
 
         //kiszedni a cookiet req.cookiesból
         if (!title || !content) {

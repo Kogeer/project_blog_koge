@@ -20,6 +20,7 @@ class DataBase {
                 db.all("SELECT * FROM posts ORDER BY created_at DESC", function(err,posts){
                     if( err !== null) {
                         console.log(err.toString());
+                        reject(err);
                     }
                     resolve(posts);
                 })

@@ -14,28 +14,31 @@ class Post {
     }
 
     static newPostPublish(req, res) {
-        const { title, content } = req.body
-
-        //kiszedni a cookiet req.cookiesból
+        const { title, slug,content } = req.body
+        
         if (!title || !content) {
             res.redirect('/newpost?error=miss');
             return;
         }
-
+        
+        //kiszedni a cookiet req.cookiesból
         const author = req.cookies.authcookie;
-        Post.newPostAdd(title,content,author);
+        Post.newPostAdd(title,content,author,slug);
 
         res.redirect('/admin');
     }
 
-    static newPostAdd(mainTitle,text,author) {
+    static newPostAdd(mainTitle,text,author,slug) {
         const post = {};
         post.author = author;
         post.date = new Date().toLocaleString();
         post.postTitle = mainTitle;
+        post.slug = slug;
         post.content = text;
+
         PostsDb.createDataBase();
         PostsDb.newPostDb(post);
+
         return true;
     }
 
@@ -45,8 +48,9 @@ class Post {
     }
 
     static async getOnePost(req,res) {
-        const {postid} = req.params;
-        const post = await PostsDb.getOnePost(postid);
+        const {postparam} = req.params;
+        const post = await PostsDb.getOnePost(postparam);
+        
         res.render('onepost', {
             post:post,
             mainTitle:"of Motors"

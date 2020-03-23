@@ -36,6 +36,6 @@ app.get('/newpost', Post.newPostPage);
 
 app.post('/newpost', Post.newPostPublish);
 
-app.get('/post/:postid', Post.getOnePost);
+app.get('/post/:postparam', Post.getOnePost);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

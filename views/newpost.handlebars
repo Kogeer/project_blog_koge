@@ -1,11 +1,15 @@
+<div class="container text-center h-100 shadow-lg p-3 mb-3 bg-white rounded">
 <form method="POST" action="/newpost" id="newpostform" onsubmit="browserValidation">
-        <label for="validationDefault01">Title</label><br>
-        <input type="text" name="title" id="title" required><br>
-        <label for="validationDefault02">Content</label><br>
-        <textarea name="content" form="newpostform" id="newpostcontent" required>Enter text here...</textarea><br>
-        <a href="/admin">Discard</a>
-        <input type="submit" value="Publish">
+        <label for="validationDefault01"><h4>Title</h4></label><br>
+        <input type="text" name="title" id="title" placeholder="Enter title here..." required>
+        <div class="mt-4 mb-0"><label for="validationDefault02"><h4>Content</h4></label></div>
+        <textarea name="content" form="newpostform" id="newpostcontent" placeholder="Enter text here..." required></textarea><br>
+        <a href="/admin" class="btn btn-warning" id="publishdiscard">Discard</a>
+        <input type="submit" value="Publish" id="publishbutton" class="btn btn-primary">
 </form>
 {{#if error}}
 <h3>Some input is missing</h3>
 {{/if}}
+</div>
+
+<link rel="stylesheet" type="text/css" href="/stylesheets/newpost.css">

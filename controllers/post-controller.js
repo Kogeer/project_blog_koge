@@ -43,6 +43,15 @@ class Post {
         const posts = await PostsDb.getPostsDb();
         return posts;
     }
+
+    static async getOnePost(req,res) {
+        const {postid} = req.params;
+        const post = await PostsDb.getOnePost(postid);
+        res.render('onepost', {
+            post:post,
+            mainTitle:"of Motors"
+        });
+    }
 }
 
 module.exports = {

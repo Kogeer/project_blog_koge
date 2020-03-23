@@ -7,6 +7,7 @@
 
 
     <link type="text/css" rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/index.css">
 
 
     <title>Koge Blog Project</title>
@@ -14,8 +15,11 @@
 
 <body>
     {{> header}}
+    <div class="text-center">
+    {{> nav}}
+    </div>
     <div class="container-fluid">
-        <div>
+        <div id="bodycontainer">
             {{{body}}}
         </div>
     </div>

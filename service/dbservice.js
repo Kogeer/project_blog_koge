@@ -27,6 +27,20 @@ class DataBase {
             })
         })
     }
+
+    static async getOnePost(postid) {
+        return new Promise((resolve,reject) => {
+            db.serialize(function() {
+                db.get(`SELECT * FROM posts WHERE id = "${postid}"`, function(err,post) {
+                    if(err !== null) {
+                        console.log(err.toString());
+                        reject(err);
+                    }
+                    resolve(post);
+                })
+            })
+        })
+    }
 }
 
 module.exports = DataBase;

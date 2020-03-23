@@ -52,6 +52,13 @@ class DataBase {
             })
         })
     }
+
+    static updatePost(id,title,slug,content) {
+        db.serialize(function() {
+            console.log(id,title,slug,content);
+            db.run(`UPDATE posts SET post_title = "${title}", post_slug="${slug}", post_content="${content}" WHERE id = "${id}"`);
+        })
+    }
 }
 
 module.exports = DataBase;

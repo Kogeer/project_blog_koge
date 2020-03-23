@@ -56,6 +56,34 @@ class Post {
             mainTitle:"of Motors"
         });
     }
+
+    static async adminPostList(req,res) {
+        const posts = await Post.getPostsDb();
+        res.render('adminposts', {
+            posts:posts,
+            mainTitle:"of Motors"
+        })
+    }
+
+    static async editPost(req,res) {
+        const {postid} = req.params;
+        const post = await PostsDb.getOnePost(postid);
+
+        res.render('editpost', {
+            post:post,
+            mainTitle: "of Motors"
+        })
+    }
+
+    static updatePost(req,res) {
+        const {postid} = req.params;
+        const {title,slug,content} = req.body;
+        // console.log(typeof +postid,title,slug,content);
+
+        PostsDb.updatePost(+postid,title,slug,content);
+
+        res.redirect('/admin-posts-list');
+    }
 }
 
 module.exports = {

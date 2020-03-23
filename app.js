@@ -32,10 +32,16 @@ app.get('/admin', loginController.cookieAuthentication.bind(loginController), lo
 
 app.get('/logout', loginController.logout.bind(loginController));
 
-app.get('/newpost', Post.newPostPage);
+app.get('/newpost', loginController.cookieAuthentication.bind(loginController), Post.newPostPage);
 
-app.post('/newpost', Post.newPostPublish);
+app.post('/newpost', loginController.cookieAuthentication.bind(loginController), Post.newPostPublish);
 
 app.get('/post/:postparam', Post.getOnePost);
+
+app.get('/admin-posts-list', loginController.cookieAuthentication.bind(loginController), Post.adminPostList);
+
+app.get('/editpost/:postid', Post.editPost);
+
+app.post('/updatepost/:postid', Post.updatePost);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

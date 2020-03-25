@@ -21,6 +21,8 @@ const loginController = new loginModule();
 
 const {Post} = require('./controllers/post-controller.js');
 
+const dataBase = require('./service/dbservice');
+dataBase.createDataBase();
 
 app.get('/', loginController.indexPage);
 
@@ -43,5 +45,7 @@ app.get('/admin-posts-list', loginController.cookieAuthentication.bind(loginCont
 app.get('/editpost/:postid', Post.editPost);
 
 app.post('/updatepost/:postid', Post.updatePost);
+
+app.post('/savedraft', Post.newPostDraft);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

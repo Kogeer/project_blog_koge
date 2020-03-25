@@ -12,9 +12,10 @@ class LoginController {
 
     async indexPage(req, res) {
         const posts = await dbPosts.Post.getPostsDb();
+        const publishedPosts = posts.filter(post => post.post_pub == 1);
         res.render('index',{
             mainTitle: "of Motors",
-            posts: posts
+            posts: publishedPosts
         });
     }
 

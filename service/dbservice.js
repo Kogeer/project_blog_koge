@@ -67,7 +67,6 @@ class DataBase {
                     if(err !== null) {
                         reject(err);
                     }
-                    console.log(post);
                     resolve(post);
                 })
             })

@@ -85,7 +85,6 @@ class Post {
         }
         if (update == undefined) {
             const isPublished = await PostsDb.isPublished(postid);
-            console.log(`Ispub értéke: ${typeof isPublished.post_pub}`);
             if(isPublished.post_pub) {
                 PostsDb.updatePost(+postid, title, slug, content, 1, isPublished.created_at);
             } else if(isPublished.post_pub == 0) {

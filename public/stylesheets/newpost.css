@@ -1,4 +1,5 @@
-input {
+#title,
+#slug {
     background-color: #f2f2f2;
     border: 0;
     padding: 5px;

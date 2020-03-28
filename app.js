@@ -24,6 +24,8 @@ const {Post} = require('./controllers/post-controller.js');
 const dataBase = require('./service/dbservice');
 dataBase.createDataBase();
 
+const dbConnectService = require('./service/dbconnectservice');
+
 app.get('/', loginController.indexPage);
 
 app.get('/login', loginController.loginPage);
@@ -49,5 +51,9 @@ app.post('/updatepost/:postid', Post.updatePost);
 app.post('/savedraft', Post.newPostDraft);
 
 app.get('/search/:content', Post.searchPostContent);
+
+app.get('/dbpath', dbConnectService.dbPathPage);
+
+app.post('/dbpath', dbConnectService.changePath);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

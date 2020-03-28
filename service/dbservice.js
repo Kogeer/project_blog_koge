@@ -1,5 +1,9 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('postsdb');
+// let dbpath = './postsdb'
+let dbpath = '';
+let db = new sqlite3.Database(dbpath);
+
+const fs = require('fs');
 
 class DataBase {
     static createDataBase() {
@@ -120,6 +124,17 @@ class DataBase {
                 })
             })
         })
+    }
+
+    static changePath(path) {
+        console.log(path);
+        if(fs.existsSync(path)) {
+            db.close();
+            dbpath = `./${path}`;
+            db = new sqlite3.Database(dbpath);
+            return true;
+        }
+        return false;
     }
 }
 

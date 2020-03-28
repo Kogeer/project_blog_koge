@@ -30,8 +30,13 @@ class Post {
 
     static async newPostAdd(mainTitle, text, author, slug) {
         const post = {};
+        const day = new Date().getDate();
+        const month = new Date().getMonth();
+        const year = new Date().getFullYear();
+        const date = `${day}-${month}-${year}`;
+
         post.author = author;
-        post.date = new Date().toLocaleString();
+        post.date = date;
         post.postTitle = mainTitle;
         post.slug = slug;
         post.content = text;
@@ -80,16 +85,14 @@ class Post {
         const { update } = req.query;
 
         if (update === 'draft') {
-            const date = 'N/A';
-            PostsDb.updatePost(+postid, title, slug, content, 0, date);
+            PostsDb.updateDraftPost(+postid, title, slug, content, 0);
         }
         if (update == undefined) {
             const isPublished = await PostsDb.isPublished(postid);
-            if(isPublished.post_pub) {
-                PostsDb.updatePost(+postid, title, slug, content, 1, isPublished.created_at);
-            } else if(isPublished.post_pub == 0) {
-                const date = new Date().toLocaleString();
-                PostsDb.updatePost(+postid, title, slug, content, 1, date);
+            if (isPublished.post_pub) {
+                PostsDb.updatePublishedPost(+postid, title, slug, content, 1, isPublished.created_at);
+            } else if (isPublished.post_pub == 0) {
+                PostsDb.updatePost(+postid, title, slug, content, 1);
             }
         }
 
@@ -114,13 +117,41 @@ class Post {
     static draftPostAdd(title, content, author, slug) {
         const post = {};
         post.author = author;
-        post.date = 'N/A'
         post.postTitle = title;
         post.slug = slug;
         post.content = content;
         post.pub = 0;
 
-        PostsDb.newPostDb(post);
+        PostsDb.newDraftPostDb(post);
+    }
+
+    static async archivedPosts() {
+        const archiv = {};
+        const posts = await PostsDb.archivePosts();
+        for(let i = 0; i < posts.length; i++) {
+            posts[i].created_at = new Date(posts[i].created_at);
+        }
+        
+        for(let i = 0; i < posts.length; i++) {
+            posts[i].year = posts[i].created_at.getFullYear();
+            posts[i].month = posts[i].created_at.getMonth()+1;
+        }
+        console.log(posts);
+
+        for(let i = 0; i < posts.length; i++) {
+            if (!archiv.hasOwnProperty(posts[i].year)) {
+				archiv[posts[i].year] = {};
+			}
+			if (!archiv[posts[i].year].hasOwnProperty(posts[i].month)) {
+				archiv[posts[i].year][posts[i].month] = [];
+			}
+			archiv[posts[i].year][posts[i].month].push({
+				id: posts[i].id,
+				title: posts[i].post_title
+			});
+        }
+        
+        return archiv;
     }
 }
 

@@ -10,7 +10,13 @@ class DataBase {
 
     static newPostDb(post) {
         db.serialize(function() {
-            db.run("INSERT INTO posts(author,created_at,post_title,post_slug,post_content,post_pub) VALUES (?,?,?,?,?,?)",[post.author,post.date,post.postTitle,post.slug,post.content,post.pub]);
+            db.run(`INSERT INTO posts(author,created_at,post_title,post_slug,post_content,post_pub) VALUES (?,datetime('now','localtime'),?,?,?,?)`,[post.author,post.postTitle,post.slug,post.content,post.pub]);
+        })
+    }
+
+    static newDraftPostDb(post) {
+        db.serialize(function() {
+            db.run(`INSERT INTO posts(author,created_at,post_title,post_slug,post_content,post_pub) VALUES (?,"N/A",?,?,?,?)`,[post.author,post.postTitle,post.slug,post.content,post.pub]);
         })
     }
 
@@ -53,10 +59,21 @@ class DataBase {
         })
     }
 
-    static updatePost(id,title,slug,content,pub,date) {
+    static updatePost(id,title,slug,content,pub) {
         db.serialize(function() {
-            console.log(id,title,slug,content);
+            db.run(`UPDATE posts SET post_title = "${title}", post_slug="${slug}", post_content="${content}", post_pub = "${pub}", created_at = datetime('now','localtime') WHERE id = "${id}"`);
+        })
+    }
+
+    static updatePublishedPost(id,title,slug,content,pub,date) {
+        db.serialize(function() {
             db.run(`UPDATE posts SET post_title = "${title}", post_slug="${slug}", post_content="${content}", post_pub = "${pub}", created_at = "${date}" WHERE id = "${id}"`);
+        })
+    }
+
+    static updateDraftPost(id,title,slug,content,pub,date) {
+        db.serialize(function() {
+            db.run(`UPDATE posts SET post_title = "${title}", post_slug="${slug}", post_content="${content}", post_pub = "${pub}", created_at = "N/A" WHERE id = "${id}"`);
         })
     }
 
@@ -71,7 +88,20 @@ class DataBase {
                 })
             })
         })
-    }    
+    }
+
+    static async archivePosts() {
+        return new Promise((resolve,reject) => {
+            db.serialize(function() {
+                db.all(`SELECT id,post_title,created_at FROM posts WHERE post_pub = 1;`, function(err,post) {
+                    if(err !== null) {
+                        reject(err);
+                    }
+                    resolve(post);
+                })
+            })
+        })
+    }
 }
 
 module.exports = DataBase;

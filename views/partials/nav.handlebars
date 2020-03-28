@@ -1,1 +1,16 @@
-<div class="mb-4" id="mainnav">&nbsp;</div>
+<div class="mb-4" id="mainnav">
+    <div class="d-flex flex-row-reverse bd-highlight pt-1 pb-1 pr-1">
+
+        <form action="/search/" onsubmit="searchPath()" id="formsearch">
+            <input type="text" placeholder="Search..." id="content">
+            <input type="submit" name="searchcontent" value="search">
+        </form>
+    </div>
+</div>
+
+<script>
+    function searchPath() {
+    const searchcontent = document.querySelector('#content').value;
+    document.querySelector('#formsearch').action = `/search/${searchcontent}`;
+    }
+</script>

@@ -136,7 +136,7 @@ class Post {
             posts[i].year = posts[i].created_at.getFullYear();
             posts[i].month = posts[i].created_at.getMonth()+1;
         }
-        console.log(posts);
+        // console.log(posts);
 
         for(let i = 0; i < posts.length; i++) {
             if (!archiv.hasOwnProperty(posts[i].year)) {
@@ -152,6 +152,19 @@ class Post {
         }
         
         return archiv;
+    }
+
+    static async searchPostContent(req,res) {
+        const {content} = req.params;
+        const posts = await PostsDb.searchContent(content);
+        const archive = await Post.archivedPosts();
+        console.log(archive);
+
+        res.render('index',{
+            mainTitle: "of Motors",
+            posts: posts,
+            archive: archive
+        });
     }
 }
 

@@ -27,6 +27,7 @@ class DataBase {
                     if( err !== null) {
                         console.log(err.toString());
                         reject(err);
+                        return;
                     }
                     resolve(posts);
                 })
@@ -42,6 +43,7 @@ class DataBase {
                         if(err !== null) {
                             console.log(err.toString());
                             reject(err);
+                            return;
                         }
                         resolve(post);
                     })
@@ -52,6 +54,7 @@ class DataBase {
                 db.get(`SELECT * FROM posts WHERE post_slug = "${postparam}";`, function(err,post) {
                     if(err !== null || post == undefined) {
                         reject(err);
+                        return;
                     }
                     resolve(post);
                 })
@@ -83,6 +86,7 @@ class DataBase {
                 db.get(`SELECT post_pub, created_at FROM posts WHERE id = "${postid}"`, function(err,post) {
                     if(err !== null) {
                         reject(err);
+                        return;
                     }
                     resolve(post);
                 })
@@ -94,10 +98,25 @@ class DataBase {
         return new Promise((resolve,reject) => {
             db.serialize(function() {
                 db.all(`SELECT id,post_title,created_at FROM posts WHERE post_pub = 1;`, function(err,post) {
-                    if(err !== null) {
+                    if(err) {
                         reject(err);
+                        return;
                     }
                     resolve(post);
+                })
+            })
+        })
+    }
+
+    static async searchContent(content) {
+        return new Promise((resolve,reject) => {
+            db.serialize(function() {
+                db.all(`SELECT * FROM posts WHERE post_content LIKE "%${content}%" ORDER BY created_at DESC`, function(err,posts) {
+                    if(err) {
+                        reject(err);
+                        return;
+                    }
+                    resolve(posts);
                 })
             })
         })

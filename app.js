@@ -48,4 +48,6 @@ app.post('/updatepost/:postid', Post.updatePost);
 
 app.post('/savedraft', Post.newPostDraft);
 
+app.get('/search/:content', Post.searchPostContent);
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
